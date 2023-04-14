@@ -5,7 +5,7 @@ import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {BaseAccount, IEntryPoint, UserOperation} from "@account-abstraction/contracts/core/BaseAccount.sol";
 import {TokenReceivers} from "./TokenReceivers.sol";
 
-contract Autopilot is BaseAccount, TokenReceivers {
+contract AutoPilot is BaseAccount, TokenReceivers {
     using ECDSA for bytes32;
     IEntryPoint private immutable _entryPoint;
 
@@ -14,13 +14,13 @@ contract Autopilot is BaseAccount, TokenReceivers {
     address public bot;
     address public owner;
 
-    struct callProperties {
+    struct CallProperties {
         bool allowed; // 1
         uint96 timegap; // 12
         uint128 lastCallTime; // 16
     }
 
-    mapping(bytes32 => callProperties) allowedCalls;
+    mapping(bytes32 => CallProperties) public allowedCalls;
 
     address public temp; // todo : optmize by using calldata instead, calldata should have senders address, and verify that in validateSignature
 
@@ -44,6 +44,8 @@ contract Autopilot is BaseAccount, TokenReceivers {
         _requireFromEntryPointOrOwner();
         if (temp == bot) _botCheck(dest, value, func);
         _call(dest, value, func);
+
+        temp = address(0);
     }
 
     /**
@@ -56,7 +58,7 @@ contract Autopilot is BaseAccount, TokenReceivers {
         _requireFromEntryPointOrOwner();
         require(dest.length == func.length, "wrong array lengths");
 
-        if (temp == bot) {
+        if (temp == bot && bot != address(0)) {
             for (uint256 i = 0; i < dest.length; i++) {
                 _botCheck(dest[i], 0, func[i]);
                 _call(dest[i], 0, func[i]); // @audit why AA sample did not consider value for batch? is there any security issue with that?
@@ -66,6 +68,8 @@ contract Autopilot is BaseAccount, TokenReceivers {
                 _call(dest[i], 0, func[i]); // @audit why AA sample did not consider value for batch? is there any security issue with that?
             }
         }
+
+        temp = address(0);
     }
 
     // Require the function call went through EntryPoint or owner
@@ -81,8 +85,10 @@ contract Autopilot is BaseAccount, TokenReceivers {
         uint256 value,
         bytes calldata func
     ) internal {
-        bytes32 hash = keccak256(abi.encodePacked(dest, value, func));
-        callProperties memory props = allowedCalls[hash];
+        require(dest != address(this), "account: bot self call not allowed"); // a safety measure, to avoid bot calling methods with onlyOwner
+
+        bytes32 hash = keccak256(abi.encode(dest, value, func)); // todo : is encodePacked safe here?
+        CallProperties memory props = allowedCalls[hash];
         require(props.allowed, "account: call not allowed");
         require(
             block.timestamp - props.lastCallTime >= props.timegap,
@@ -142,12 +148,14 @@ contract Autopilot is BaseAccount, TokenReceivers {
     /**
      * Bot shouldnt be able to call any of following functions
      */
-    function addAllowedCall(bytes32 funcHash, uint96 timegap) public onlyOwner {
-        allowedCalls[funcHash] = callProperties(true, timegap, 0);
+    // callHash = keccak256(abi.encode(dest, value, func));
+    function addAllowedCall(bytes32 callHash, uint96 timegap) public onlyOwner {
+        // todo: add method for multiple calls
+        allowedCalls[callHash] = CallProperties(true, timegap, 0);
     }
 
-    function removeAllowedCall(bytes32 funcHash) public onlyOwner {
-        allowedCalls[funcHash] = callProperties(false, 0, 0);
+    function removeAllowedCall(bytes32 callHash) public onlyOwner {
+        allowedCalls[callHash] = CallProperties(false, 0, 0);
     }
 
     function setBot(address newBot) public onlyOwner {
@@ -159,7 +167,7 @@ contract Autopilot is BaseAccount, TokenReceivers {
         require(
             msg.sender == owner || msg.sender == address(this),
             "only owner"
-        );
+        ); // todo: make requires of same type
         _;
     }
 
@@ -171,7 +179,7 @@ contract Autopilot is BaseAccount, TokenReceivers {
      * check current account deposit in the entryPoint
      */
     function getDeposit() public view returns (uint256) {
-        return entryPoint().balanceOf(address(this)); // @audit ????
+        return entryPoint().balanceOf(address(this)); // @audit ???? I am not clear on functions of deposit management
     }
 
     /**

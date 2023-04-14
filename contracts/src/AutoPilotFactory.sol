@@ -3,9 +3,9 @@ pragma solidity ^0.8.12;
 
 import "@openzeppelin/contracts/utils/Create2.sol";
 
-import {Autopilot, IEntryPoint} from "./Autopilot.sol";
+import {AutoPilot, IEntryPoint} from "./AutoPilot.sol";
 
-contract AutopilotFactory {
+contract AutoPilotFactory {
     IEntryPoint public immutable entryPoint;
 
     constructor(IEntryPoint _entryPoint) {
@@ -15,13 +15,13 @@ contract AutopilotFactory {
     function createAccount(
         address owner,
         bytes32 salt
-    ) public returns (Autopilot ret) {
+    ) public returns (AutoPilot ret) {
         address addr = getAddress(owner, salt);
         uint codeSize = addr.code.length;
         if (codeSize > 0) {
-            return Autopilot(payable(addr));
+            return AutoPilot(payable(addr));
         }
-        ret = Autopilot(new Autopilot{salt: salt}(entryPoint, owner));
+        ret = AutoPilot(new AutoPilot{salt: salt}(entryPoint, owner));
     }
 
     function getAddress(
@@ -33,7 +33,7 @@ contract AutopilotFactory {
                 salt,
                 keccak256(
                     abi.encodePacked(
-                        type(Autopilot).creationCode,
+                        type(AutoPilot).creationCode,
                         abi.encode(address(entryPoint), owner)
                     )
                 )
