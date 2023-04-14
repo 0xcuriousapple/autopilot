@@ -9,9 +9,20 @@ contract Autopilot is BaseAccount, TokenReceivers {
     using ECDSA for bytes32;
     IEntryPoint private immutable _entryPoint;
 
-    //explicit sizes of nonce, to fit a single storage cell with "owner"
+    //explicit sizes of nonce, to fit a single storage cell with "bot", not owner since bot is primary user for this account type
     uint96 private _nonce;
+    address public bot;
     address public owner;
+
+    struct callProperties {
+        bool allowed; // 1
+        uint96 timegap; // 12
+        uint128 lastCallTime; // 16
+    }
+
+    mapping(bytes32 => callProperties) allowedCalls;
+
+    address public temp; // todo : optmize by using calldata instead, calldata should have senders address, and verify that in validateSignature
 
     constructor(IEntryPoint anEntryPoint, address anOwner) {
         _entryPoint = anEntryPoint;
@@ -31,6 +42,7 @@ contract Autopilot is BaseAccount, TokenReceivers {
         bytes calldata func
     ) external {
         _requireFromEntryPointOrOwner();
+        if (temp == bot) _botCheck(dest, value, func);
         _call(dest, value, func);
     }
 
@@ -43,8 +55,16 @@ contract Autopilot is BaseAccount, TokenReceivers {
     ) external {
         _requireFromEntryPointOrOwner();
         require(dest.length == func.length, "wrong array lengths");
-        for (uint256 i = 0; i < dest.length; i++) {
-            _call(dest[i], 0, func[i]);
+
+        if (temp == bot) {
+            for (uint256 i = 0; i < dest.length; i++) {
+                _botCheck(dest[i], 0, func[i]);
+                _call(dest[i], 0, func[i]); // @audit why AA sample did not consider value for batch? is there any security issue with that?
+            }
+        } else {
+            for (uint256 i = 0; i < dest.length; i++) {
+                _call(dest[i], 0, func[i]); // @audit why AA sample did not consider value for batch? is there any security issue with that?
+            }
         }
     }
 
@@ -54,6 +74,21 @@ contract Autopilot is BaseAccount, TokenReceivers {
             msg.sender == address(entryPoint()) || msg.sender == owner,
             "account: not Owner or EntryPoint"
         );
+    }
+
+    function _botCheck(
+        address dest,
+        uint256 value,
+        bytes calldata func
+    ) internal {
+        bytes32 hash = keccak256(abi.encodePacked(dest, value, func));
+        callProperties memory props = allowedCalls[hash];
+        require(props.allowed, "account: call not allowed");
+        require(
+            block.timestamp - props.lastCallTime >= props.timegap,
+            "account: timegap not reached"
+        );
+        allowedCalls[hash].lastCallTime = uint128(block.timestamp);
     }
 
     function _call(address target, uint256 value, bytes memory data) internal {
@@ -92,9 +127,40 @@ contract Autopilot is BaseAccount, TokenReceivers {
         bytes32 userOpHash
     ) internal virtual override returns (uint256 validationData) {
         bytes32 hash = userOpHash.toEthSignedMessageHash();
-        if (owner != hash.recover(userOp.signature))
-            return SIG_VALIDATION_FAILED;
-        return 0;
+        address signer = hash.recover(userOp.signature);
+        if (signer == owner || signer == bot) {
+            temp = signer;
+            return 0;
+        }
+        return SIG_VALIDATION_FAILED;
+    }
+
+    /*//////////////////////////////////////////////////////////////
+                    ACCOUNT MANAGEMENT
+    //////////////////////////////////////////////////////////////*/
+
+    /**
+     * Bot shouldnt be able to call any of following functions
+     */
+    function addAllowedCall(bytes32 funcHash, uint96 timegap) public onlyOwner {
+        allowedCalls[funcHash] = callProperties(true, timegap, 0);
+    }
+
+    function removeAllowedCall(bytes32 funcHash) public onlyOwner {
+        allowedCalls[funcHash] = callProperties(false, 0, 0);
+    }
+
+    function setBot(address newBot) public onlyOwner {
+        bot = newBot;
+    }
+
+    modifier onlyOwner() {
+        //directly from EOA owner, or through the account itself (which gets redirected through execute())
+        require(
+            msg.sender == owner || msg.sender == address(this),
+            "only owner"
+        );
+        _;
     }
 
     /*//////////////////////////////////////////////////////////////
@@ -105,7 +171,7 @@ contract Autopilot is BaseAccount, TokenReceivers {
      * check current account deposit in the entryPoint
      */
     function getDeposit() public view returns (uint256) {
-        return entryPoint().balanceOf(address(this));
+        return entryPoint().balanceOf(address(this)); // @audit ????
     }
 
     /**
@@ -125,14 +191,5 @@ contract Autopilot is BaseAccount, TokenReceivers {
         uint256 amount
     ) public onlyOwner {
         entryPoint().withdrawTo(withdrawAddress, amount);
-    }
-
-    modifier onlyOwner() {
-        //directly from EOA owner, or through the account itself (which gets redirected through execute())
-        require(
-            msg.sender == owner || msg.sender == address(this),
-            "only owner"
-        );
-        _;
     }
 }
