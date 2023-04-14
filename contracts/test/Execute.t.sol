@@ -76,6 +76,7 @@ contract AutoPilotExecuteTest is Test {
                     calldataAutoPilot
                 )
             ),
+            type(uint48).max,
             10
         );
         vm.stopPrank();
@@ -108,6 +109,7 @@ contract AutoPilotExecuteTest is Test {
             keccak256(
                 abi.encode(address(externalContract), 0, calldataAutoPilot)
             ),
+            type(uint48).max,
             10
         );
         vm.stopPrank();
@@ -122,8 +124,12 @@ contract AutoPilotExecuteTest is Test {
         vm.startPrank(entryPoint);
         autopilot.execute(address(externalContract), 0, calldataAutoPilot);
         assertEq(externalContract.x(), 1);
-        (bool allowed, uint96 timegap, uint128 lastCallTime) = autopilot
-            .allowedCalls(
+        (
+            bool allowed,
+            uint48 allowance,
+            uint96 timegap,
+            uint96 lastCallTime
+        ) = autopilot.allowedCalls(
                 keccak256(
                     abi.encode(address(externalContract), 0, calldataAutoPilot)
                 )
@@ -141,7 +147,7 @@ contract AutoPilotExecuteTest is Test {
         vm.expectRevert("account: timegap not reached");
         autopilot.execute(address(externalContract), 0, calldataAutoPilot);
         assertEq(externalContract.x(), 0);
-        (allowed, timegap, lastCallTime) = autopilot.allowedCalls(
+        (allowed, allowance, timegap, lastCallTime) = autopilot.allowedCalls(
             keccak256(
                 abi.encode(address(externalContract), 0, calldataAutoPilot)
             )
@@ -157,7 +163,7 @@ contract AutoPilotExecuteTest is Test {
         ); // I understnad that this not needed, doing it for clarity
         autopilot.execute(address(externalContract), 0, calldataAutoPilot);
         assertEq(externalContract.x(), 1);
-        (allowed, timegap, lastCallTime) = autopilot.allowedCalls(
+        (allowed, allowance, timegap, lastCallTime) = autopilot.allowedCalls(
             keccak256(
                 abi.encode(address(externalContract), 0, calldataAutoPilot)
             )

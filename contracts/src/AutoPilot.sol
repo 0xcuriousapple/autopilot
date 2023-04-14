@@ -17,8 +17,9 @@ contract AutoPilot is BaseAccount, TokenReceivers, Initializable {
 
     struct CallProperties {
         bool allowed; // 1
+        uint48 allowance; // 6
         uint96 timegap; // 12
-        uint128 lastCallTime; // 16
+        uint96 lastCallTime; // 12
     }
 
     mapping(bytes32 => CallProperties) public allowedCalls;
@@ -101,7 +102,10 @@ contract AutoPilot is BaseAccount, TokenReceivers, Initializable {
             block.timestamp - props.lastCallTime >= props.timegap,
             "account: timegap not reached"
         );
-        allowedCalls[hash].lastCallTime = uint128(block.timestamp);
+        require(props.allowance > 0, "account: allowance exhausted");
+
+        allowedCalls[hash].allowance--;
+        allowedCalls[hash].lastCallTime = uint96(block.timestamp);
     }
 
     function _call(address target, uint256 value, bytes memory data) internal {
@@ -156,13 +160,17 @@ contract AutoPilot is BaseAccount, TokenReceivers, Initializable {
      * Bot shouldn't be able to call any of following functions
      */
     // callHash = keccak256(abi.encode(dest, value, func));
-    function addAllowedCall(bytes32 callHash, uint96 timegap) public onlyOwner {
+    function addAllowedCall(
+        bytes32 callHash,
+        uint48 allowance,
+        uint96 timegap
+    ) public onlyOwner {
         // todo: add method for multiple calls
-        allowedCalls[callHash] = CallProperties(true, timegap, 0);
+        allowedCalls[callHash] = CallProperties(true, allowance, timegap, 0);
     }
 
     function removeAllowedCall(bytes32 callHash) public onlyOwner {
-        allowedCalls[callHash] = CallProperties(false, 0, 0);
+        allowedCalls[callHash] = CallProperties(false, 0, 0, 0);
     }
 
     function setBot(address newBot) public onlyOwner {
