@@ -4,8 +4,9 @@ pragma solidity ^0.8.19;
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {BaseAccount, IEntryPoint, UserOperation} from "@account-abstraction/contracts/core/BaseAccount.sol";
 import {TokenReceivers} from "./TokenReceivers.sol";
+import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
-contract AutoPilot is BaseAccount, TokenReceivers {
+contract AutoPilot is BaseAccount, TokenReceivers, Initializable {
     using ECDSA for bytes32;
     IEntryPoint private immutable _entryPoint;
 
@@ -26,6 +27,11 @@ contract AutoPilot is BaseAccount, TokenReceivers {
 
     constructor(IEntryPoint anEntryPoint, address anOwner) {
         _entryPoint = anEntryPoint;
+        owner = anOwner;
+        _disableInitializers();
+    }
+
+    function initialize(address anOwner) public virtual initializer {
         owner = anOwner;
     }
 

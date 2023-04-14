@@ -3,8 +3,11 @@
 [![Test smart contracts](https://github.com/pcaversaccio/hardhat-project-template-ts/actions/workflows/test-contracts.yml/badge.svg)](https://github.com/pcaversaccio/hardhat-project-template-ts/actions/workflows/test-contracts.yml)
 
 [All Commands](./README-ALL-COMMANDS.md)
+
 ## Deployment
+
 :warning: Only goerli is configured
+
 1. Add MNEMONIC in env
 2. `yarn deploy:goerli`
 

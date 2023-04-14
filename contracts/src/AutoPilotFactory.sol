@@ -2,14 +2,14 @@
 pragma solidity ^0.8.12;
 
 import "@openzeppelin/contracts/utils/Create2.sol";
-
+import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {AutoPilot, IEntryPoint} from "./AutoPilot.sol";
 
 contract AutoPilotFactory {
-    IEntryPoint public immutable entryPoint;
+    AutoPilot public immutable autoPilotImplementation;
 
     constructor(IEntryPoint _entryPoint) {
-        entryPoint = _entryPoint;
+        autoPilotImplementation = new AutoPilot(_entryPoint, address(this));
     }
 
     function createAccount(
@@ -21,7 +21,14 @@ contract AutoPilotFactory {
         if (codeSize > 0) {
             return AutoPilot(payable(addr));
         }
-        ret = AutoPilot(new AutoPilot{salt: bytes32(salt)}(entryPoint, owner));
+        ret = AutoPilot(
+            payable(
+                new ERC1967Proxy{salt: bytes32(salt)}(
+                    address(autoPilotImplementation),
+                    abi.encodeCall(AutoPilot.initialize, (owner))
+                )
+            )
+        );
     }
 
     function getAddress(
@@ -33,8 +40,11 @@ contract AutoPilotFactory {
                 bytes32(salt),
                 keccak256(
                     abi.encodePacked(
-                        type(AutoPilot).creationCode,
-                        abi.encode(address(entryPoint), owner)
+                        type(ERC1967Proxy).creationCode,
+                        abi.encode(
+                            address(autoPilotImplementation),
+                            abi.encodeCall(AutoPilot.initialize, (owner))
+                        )
                     )
                 )
             );

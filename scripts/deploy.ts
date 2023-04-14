@@ -2,8 +2,10 @@ import hre, { ethers } from "hardhat";
 
 async function main() {
   // todo : make this dynamic, this would only work for goerli's entrypoint
-  const entryPoint = "0x0576a174D229E3cFA37253523E645A78A0C91B57"
-  const contract = await ethers.deployContract("AutoPilotFactory", [entryPoint]);
+  const entryPoint = "0x0576a174D229E3cFA37253523E645A78A0C91B57";
+  const contract = await ethers.deployContract("AutoPilotFactory", [
+    entryPoint,
+  ]);
 
   await contract.deployed();
 
