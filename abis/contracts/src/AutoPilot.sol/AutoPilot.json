@@ -1,5 +1,6 @@
 [
   "constructor(address,address)",
+  "event Initialized(uint8)",
   "function addAllowedCall(bytes32,uint96)",
   "function addDeposit() payable",
   "function allowedCalls(bytes32) view returns (bool, uint96, uint128)",
@@ -8,6 +9,7 @@
   "function execute(address,uint256,bytes)",
   "function executeBatch(address[],bytes[])",
   "function getDeposit() view returns (uint256)",
+  "function initialize(address)",
   "function nonce() view returns (uint256)",
   "function onERC1155BatchReceived(address,address,uint256[],uint256[],bytes) pure returns (bytes4)",
   "function onERC1155Received(address,address,uint256,uint256,bytes) pure returns (bytes4)",

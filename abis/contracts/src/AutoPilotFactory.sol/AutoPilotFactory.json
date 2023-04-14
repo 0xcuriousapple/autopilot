@@ -1,6 +1,6 @@
 [
   "constructor(address)",
-  "function createAccount(address,bytes32) returns (address)",
-  "function entryPoint() view returns (address)",
-  "function getAddress(address,bytes32) view returns (address)"
+  "function autoPilotImplementation() view returns (address)",
+  "function createAccount(address,uint256) returns (address)",
+  "function getAddress(address,uint256) view returns (address)"
 ]
