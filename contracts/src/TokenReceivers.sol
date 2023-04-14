@@ -11,8 +11,8 @@ import {IERC1155Receiver} from "@openzeppelin/contracts/token/ERC1155/IERC1155Re
  *   Handles supported tokens' callbacks, allowing account receiving these tokens.
  */
 contract TokenReceivers is IERC777Recipient, IERC721Receiver, IERC1155Receiver {
-
     receive() external payable {}
+
     function tokensReceived(
         address,
         address,
@@ -20,8 +20,7 @@ contract TokenReceivers is IERC777Recipient, IERC721Receiver, IERC1155Receiver {
         uint256,
         bytes calldata,
         bytes calldata
-    ) external pure override {
-    }
+    ) external pure override {}
 
     function onERC721Received(
         address,
@@ -52,7 +51,9 @@ contract TokenReceivers is IERC777Recipient, IERC721Receiver, IERC1155Receiver {
         return IERC1155Receiver.onERC1155BatchReceived.selector;
     }
 
-    function supportsInterface(bytes4 interfaceId) external view virtual override returns (bool) {
+    function supportsInterface(
+        bytes4 interfaceId
+    ) external view virtual override returns (bool) {
         return
             interfaceId == type(IERC721Receiver).interfaceId ||
             interfaceId == type(IERC1155Receiver).interfaceId ||

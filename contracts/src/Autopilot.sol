@@ -5,9 +5,7 @@ import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {BaseAccount, IEntryPoint, UserOperation} from "@account-abstraction/contracts/core/BaseAccount.sol";
 import {TokenReceivers} from "./TokenReceivers.sol";
 
-
 contract Autopilot is BaseAccount, TokenReceivers {
-
     using ECDSA for bytes32;
     IEntryPoint private immutable _entryPoint;
 
@@ -20,7 +18,6 @@ contract Autopilot is BaseAccount, TokenReceivers {
         owner = anOwner;
     }
 
-
     /*//////////////////////////////////////////////////////////////
                          EXECUTE 
     //////////////////////////////////////////////////////////////*/
@@ -28,7 +25,11 @@ contract Autopilot is BaseAccount, TokenReceivers {
     /**
      * execute a transaction (called directly from owner, or by entryPoint)
      */
-    function execute(address dest, uint256 value, bytes calldata func) external {
+    function execute(
+        address dest,
+        uint256 value,
+        bytes calldata func
+    ) external {
         _requireFromEntryPointOrOwner();
         _call(dest, value, func);
     }
@@ -36,7 +37,10 @@ contract Autopilot is BaseAccount, TokenReceivers {
     /**
      * execute a sequence of transactions
      */
-    function executeBatch(address[] calldata dest, bytes[] calldata func) external {
+    function executeBatch(
+        address[] calldata dest,
+        bytes[] calldata func
+    ) external {
         _requireFromEntryPointOrOwner();
         require(dest.length == func.length, "wrong array lengths");
         for (uint256 i = 0; i < dest.length; i++) {
@@ -46,12 +50,14 @@ contract Autopilot is BaseAccount, TokenReceivers {
 
     // Require the function call went through EntryPoint or owner
     function _requireFromEntryPointOrOwner() internal view {
-        require(msg.sender == address(entryPoint()) || msg.sender == owner, "account: not Owner or EntryPoint");
+        require(
+            msg.sender == address(entryPoint()) || msg.sender == owner,
+            "account: not Owner or EntryPoint"
+        );
     }
 
-
     function _call(address target, uint256 value, bytes memory data) internal {
-        (bool success, bytes memory result) = target.call{value : value}(data);
+        (bool success, bytes memory result) = target.call{value: value}(data);
         if (!success) {
             assembly {
                 revert(add(result, 32), mload(result))
@@ -63,8 +69,7 @@ contract Autopilot is BaseAccount, TokenReceivers {
                     BASE ACCOUNT OVERRIDES
     //////////////////////////////////////////////////////////////*/
 
-
-     /// @inheritdoc BaseAccount
+    /// @inheritdoc BaseAccount
     function nonce() public view virtual override returns (uint256) {
         return _nonce;
     }
@@ -75,20 +80,22 @@ contract Autopilot is BaseAccount, TokenReceivers {
     }
 
     /// implement template method of BaseAccount
-    function _validateAndUpdateNonce(UserOperation calldata userOp) internal override {
+    function _validateAndUpdateNonce(
+        UserOperation calldata userOp
+    ) internal override {
         require(_nonce++ == userOp.nonce, "account: invalid nonce");
     }
 
     /// implement template method of BaseAccount
-    function _validateSignature(UserOperation calldata userOp, bytes32 userOpHash)
-    internal override virtual returns (uint256 validationData) {
+    function _validateSignature(
+        UserOperation calldata userOp,
+        bytes32 userOpHash
+    ) internal virtual override returns (uint256 validationData) {
         bytes32 hash = userOpHash.toEthSignedMessageHash();
         if (owner != hash.recover(userOp.signature))
             return SIG_VALIDATION_FAILED;
         return 0;
     }
-
-   
 
     /*//////////////////////////////////////////////////////////////
                     DEPOSIT MANAGEMENT
@@ -105,22 +112,27 @@ contract Autopilot is BaseAccount, TokenReceivers {
      * deposit more funds for this account in the entryPoint
      */
     function addDeposit() public payable {
-        entryPoint().depositTo{value : msg.value}(address(this));
+        entryPoint().depositTo{value: msg.value}(address(this));
     }
 
     /**
      * withdraw value from the account's deposit
      * @param withdrawAddress target to send to
      * @param amount to withdraw
-    */
-    function withdrawDepositTo(address payable withdrawAddress, uint256 amount) public onlyOwner {
+     */
+    function withdrawDepositTo(
+        address payable withdrawAddress,
+        uint256 amount
+    ) public onlyOwner {
         entryPoint().withdrawTo(withdrawAddress, amount);
     }
 
     modifier onlyOwner() {
         //directly from EOA owner, or through the account itself (which gets redirected through execute())
-        require(msg.sender == owner || msg.sender == address(this), "only owner");
+        require(
+            msg.sender == owner || msg.sender == address(this),
+            "only owner"
+        );
         _;
     }
-
 }
