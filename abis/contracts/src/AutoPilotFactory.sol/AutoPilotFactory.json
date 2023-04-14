@@ -1,0 +1,6 @@
+[
+  "constructor(address)",
+  "function createAccount(address,bytes32) returns (address)",
+  "function entryPoint() view returns (address)",
+  "function getAddress(address,bytes32) view returns (address)"
+]

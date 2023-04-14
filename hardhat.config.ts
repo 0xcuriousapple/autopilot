@@ -123,7 +123,9 @@ const config: HardhatUserConfig = {
       chainId: 5,
       url: process.env.ETH_GOERLI_TESTNET_URL || "",
       accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      { 
+        mnemonic : process.env.MNEMONIC
+      }
     },
     sepolia: {
       chainId: 11155111,

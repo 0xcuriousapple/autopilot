@@ -9,7 +9,7 @@ contract AutoPilot is BaseAccount, TokenReceivers {
     using ECDSA for bytes32;
     IEntryPoint private immutable _entryPoint;
 
-    //explicit sizes of nonce, to fit a single storage cell with "bot", not owner since bot is primary user for this account type
+    // explicit sizes of nonce, to fit a single storage cell with "bot", not owner since bot is primary user for this account type
     uint96 private _nonce;
     address public bot;
     address public owner;
@@ -22,7 +22,7 @@ contract AutoPilot is BaseAccount, TokenReceivers {
 
     mapping(bytes32 => CallProperties) public allowedCalls;
 
-    address public temp; // todo : optmize by using calldata instead, calldata should have senders address, and verify that in validateSignature
+    address public temp; // todo : optimize by using calldata instead, calldata should have senders address, and verify that in validateSignature
 
     constructor(IEntryPoint anEntryPoint, address anOwner) {
         _entryPoint = anEntryPoint;
@@ -147,7 +147,7 @@ contract AutoPilot is BaseAccount, TokenReceivers {
     //////////////////////////////////////////////////////////////*/
 
     /**
-     * Bot shouldnt be able to call any of following functions
+     * Bot shouldn't be able to call any of following functions
      */
     // callHash = keccak256(abi.encode(dest, value, func));
     function addAllowedCall(bytes32 callHash, uint96 timegap) public onlyOwner {

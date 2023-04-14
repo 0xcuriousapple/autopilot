@@ -1,0 +1,23 @@
+[
+  "constructor(address,address)",
+  "function addAllowedCall(bytes32,uint96)",
+  "function addDeposit() payable",
+  "function allowedCalls(bytes32) view returns (bool, uint96, uint128)",
+  "function bot() view returns (address)",
+  "function entryPoint() view returns (address)",
+  "function execute(address,uint256,bytes)",
+  "function executeBatch(address[],bytes[])",
+  "function getDeposit() view returns (uint256)",
+  "function nonce() view returns (uint256)",
+  "function onERC1155BatchReceived(address,address,uint256[],uint256[],bytes) pure returns (bytes4)",
+  "function onERC1155Received(address,address,uint256,uint256,bytes) pure returns (bytes4)",
+  "function onERC721Received(address,address,uint256,bytes) pure returns (bytes4)",
+  "function owner() view returns (address)",
+  "function removeAllowedCall(bytes32)",
+  "function setBot(address)",
+  "function supportsInterface(bytes4) view returns (bool)",
+  "function temp() view returns (address)",
+  "function tokensReceived(address,address,address,uint256,bytes,bytes) pure",
+  "function validateUserOp(tuple(address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,uint256) returns (uint256)",
+  "function withdrawDepositTo(address,uint256)"
+]
