@@ -3,3 +3,4 @@ xdeployer/=node_modules/xdeployer/
 forge-std/=contracts/lib/forge-std/src/
 @openzeppelin/=node_modules/@openzeppelin/
 ds-test/=contracts/lib/forge-std/lib/ds-test/src/
+@account-abstraction/=node_modules/@account-abstraction/
