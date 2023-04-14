@@ -42,7 +42,7 @@ contract AutoPilot is BaseAccount, TokenReceivers {
         bytes calldata func
     ) external {
         _requireFromEntryPointOrOwner();
-        if (temp == bot) _botCheck(dest, value, func);
+        if (temp == bot && bot != address(0)) _botCheck(dest, value, func);
         _call(dest, value, func);
 
         temp = address(0);
@@ -70,6 +70,7 @@ contract AutoPilot is BaseAccount, TokenReceivers {
         }
 
         temp = address(0);
+        // dev : do we want to support it like do x+1 action depending upon output of xth action?
     }
 
     // Require the function call went through EntryPoint or owner
