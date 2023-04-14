@@ -25,7 +25,7 @@ contract AutoPilotExecuteTest is Test {
     bytes [] public func;
     function setUp() public {
         AutoPilotFactory autopilotFac = new AutoPilotFactory(IEntryPoint(entryPoint));
-        autopilot = autopilotFac.createAccount(owner, keccak256(abi.encode("autopilot")));
+        autopilot = autopilotFac.createAccount(owner, uint256(keccak256(abi.encode("autopilot"))));
         externalContract = new DummyContract();
         externalContract2 = new DummyContract();
 

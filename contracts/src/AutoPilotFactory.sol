@@ -14,23 +14,23 @@ contract AutoPilotFactory {
 
     function createAccount(
         address owner,
-        bytes32 salt
+        uint256 salt
     ) public returns (AutoPilot ret) {
         address addr = getAddress(owner, salt);
         uint codeSize = addr.code.length;
         if (codeSize > 0) {
             return AutoPilot(payable(addr));
         }
-        ret = AutoPilot(new AutoPilot{salt: salt}(entryPoint, owner));
+        ret = AutoPilot(new AutoPilot{salt: bytes32(salt)}(entryPoint, owner));
     }
 
     function getAddress(
         address owner,
-        bytes32 salt
+        uint256 salt
     ) public view returns (address) {
         return
             Create2.computeAddress(
-                salt,
+                bytes32(salt),
                 keccak256(
                     abi.encodePacked(
                         type(AutoPilot).creationCode,
