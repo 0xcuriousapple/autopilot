@@ -2,7 +2,19 @@
 ### For Client : [AutoPilot Client](https://github.com/abhishekvispute/autopilot-client) 
 ### For Bot : [AutoPilot Bot](https://github.com/abhishekvispute/autopilot-bot)
 
-![Autopilot](https://user-images.githubusercontent.com/46760063/232172915-276c8dfb-83fb-49c6-9744-dacb7804b721.jpg)
+![Autopilot](https://user-images.githubusercontent.com/46760063/232250693-309424cc-00d5-41e2-9e54-68e09a000fab.jpg)
+
+This project builds upon the concept of account abstraction, enabling users to seamlessly automate future actions for their wallets. Each account consists of two distinct actors: the owner, who is the user themselves, and a bot.
+The owner grants the bot permission to perform a specified range of actions, which are executed according to a predetermined schedule and interval. By automating these tasks, the bot efficiently carries out the owner's desired actions without necessitating the owner's intervention moving forward.
+The system is non-custodial, as funds remain solely in your wallet. Furthermore, it is permissionless, as the bot can only perform actions explicitly permitted by the user.
+
+We use ERC4337 contracts and extends them. We override the validateSignature method to accommodate signatures from both the owner and the bot, ensuring the signer's identity is recorded. Later, during the execution process, we permit only the authorized actions for each party according to their respective schedules, while allowing the owner to perform all actions.
+Our client incorporates the Account Abstraction SDK, and we use StackUp as our bundler. The contracts have been deployed on both Görli and Polygon Mumbai networks. The rationale behind deploying on Polygon is the reduced gas costs associated with highly active bots. We believe that for intricate bot strategies, affordable gas prices are crucial
+
+### [Presentation](https://www.canva.com/design/DAFgEAZu_ok/05yy8N_N6BOtS37AkaDVuA/edit?utm_content=DAFgEAZu_ok&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+
+### [Demo]()
+
 ## Deployment
 
 1. Add MNEMONIC in env
