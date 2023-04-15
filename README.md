@@ -11,7 +11,14 @@
 2. `yarn deploy:goerli`
 3. `npx hardhat verify --network goerli contractAddress "0x0576a174D229E3cFA37253523E645A78A0C91B57"`
 
-Factory Deployed Address: 0x7c7FBb99431050bbbe532712cD331105D461C5B7
+Factory Deployed Address: `0x7c7FBb99431050bbbe532712cD331105D461C5B7` </br>
+
+**Account Verification** 
+
+Proxy: 
+
+Implementation
+`npx hardhat verify --network goerli contractAddress "0x0576a174D229E3cFA37253523E645A78A0C91B57" "FactoryAddress"`
 
 ## Tests
 
