@@ -185,7 +185,9 @@ const config: HardhatUserConfig = {
       chainId: 80001,
       url: process.env.POLYGON_TESTNET_URL || "",
       accounts:
-        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+        { 
+          mnemonic : process.env.MNEMONIC
+        }
     },
     polygonZkEVMTestnet: {
       chainId: 1442,
