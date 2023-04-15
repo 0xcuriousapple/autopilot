@@ -1,9 +1,9 @@
 [
   "constructor(address,address)",
   "event Initialized(uint8)",
-  "function addAllowedCall(bytes32,uint96)",
+  "function addAllowedCall(bytes32,uint48,uint96)",
   "function addDeposit() payable",
-  "function allowedCalls(bytes32) view returns (bool, uint96, uint128)",
+  "function allowedCalls(bytes32) view returns (bool, uint48, uint96, uint96)",
   "function bot() view returns (address)",
   "function entryPoint() view returns (address)",
   "function execute(address,uint256,bytes)",
