@@ -1124,16 +1124,16 @@
     "@truffle/error" "^0.2.0"
     colors "1.4.0"
 
-"@truffle/compile-solidity@^6.0.65":
-  version "6.0.65"
-  resolved "https://registry.yarnpkg.com/@truffle/compile-solidity/-/compile-solidity-6.0.65.tgz#279dd5511079d7aa1a0f997de1b368c26fb74cfa"
-  integrity sha512-fmBOsv7avA2qFkpnYMIkIhBzCzsrF6W2UP2CLkXYbkVsE0MbjbceysqKwcpOdPb1xPRVh3J8wo7a3sXu79jn4A==
+"@truffle/compile-solidity@^6.0.66":
+  version "6.0.66"
+  resolved "https://registry.yarnpkg.com/@truffle/compile-solidity/-/compile-solidity-6.0.66.tgz#28b432a90766d49530bba6371a7a00f8246e79d9"
+  integrity sha512-IAOSBRf32kI6SzD3G9ZA8D6Df96TX2G+XW9m8tKEUghYk38NCTqKTg13u6GKrIuDrtTzWw/f/Eq8mn0bTdDoig==
   dependencies:
     "@truffle/compile-common" "^0.9.4"
-    "@truffle/config" "^1.3.54"
+    "@truffle/config" "^1.3.55"
     "@truffle/contract-sources" "^0.2.0"
     "@truffle/expect" "^0.1.5"
-    "@truffle/profiler" "^0.1.46"
+    "@truffle/profiler" "^0.1.47"
     axios "1.2.4"
     axios-retry "^3.1.9"
     debug "^4.3.1"
@@ -1146,14 +1146,14 @@
     semver "7.3.7"
     solc "0.8.19"
 
-"@truffle/config@^1.3.54":
-  version "1.3.54"
-  resolved "https://registry.yarnpkg.com/@truffle/config/-/config-1.3.54.tgz#2bc72c08b5efd43e526406591132ef1e2faec860"
-  integrity sha512-sCFIRqBkxanuYueMQalp4q/1+wxYq5IdAZSJFUXK5FbvhDGU437bl1MuMxGDxhjztf0ZN49YsELAjYMVzOGpUQ==
+"@truffle/config@^1.3.55":
+  version "1.3.55"
+  resolved "https://registry.yarnpkg.com/@truffle/config/-/config-1.3.55.tgz#70ac7103e5a844717303d04deab32ca16356ad83"
+  integrity sha512-18nLgtnkDCwMiTB3fyJxXzRzuO28wtJyY3YIgJBMg4ujKYpAxeI6hOPafhrp9qGqR7tC0Pj1o+ip3wFxEZJtuQ==
   dependencies:
     "@truffle/error" "^0.2.0"
     "@truffle/events" "^0.1.22"
-    "@truffle/provider" "^0.3.7"
+    "@truffle/provider" "^0.3.8"
     conf "^10.1.2"
     debug "^4.3.1"
     find-up "^2.1.0"
@@ -1168,14 +1168,14 @@
     debug "^4.3.1"
     glob "^7.1.6"
 
-"@truffle/dashboard-hardhat-plugin@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@truffle/dashboard-hardhat-plugin/-/dashboard-hardhat-plugin-0.2.0.tgz#f091be20dd65887886bf16761cc9ae7b9f52f044"
-  integrity sha512-vrXHgn8ThSAPmOkeKei7TSSKXqp00VG9U+rRo+nCf+rjJxe+OASmA6ThWJNwNwxgW6J+ibpAFU+XNIwnF51TFg==
+"@truffle/dashboard-hardhat-plugin@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@truffle/dashboard-hardhat-plugin/-/dashboard-hardhat-plugin-0.2.1.tgz#739e99d6f65dc49d4d9d61b7e30c9edf5600f6c0"
+  integrity sha512-Wi1Ygi7ZKJhj1XvotpaFB4Z5jBuMTUfnxstJQg1wbs01sbEnLt97EgIHaEk8j0zr/4F1dLsa+av6TnZgSCFxBA==
   dependencies:
-    "@truffle/config" "^1.3.54"
+    "@truffle/config" "^1.3.55"
     "@truffle/dashboard-message-bus-client" "^0.1.10"
-    "@truffle/from-hardhat" "^0.2.6"
+    "@truffle/from-hardhat" "^0.2.7"
 
 "@truffle/dashboard-message-bus-client@^0.1.10":
   version "0.1.10"
@@ -1218,31 +1218,31 @@
   resolved "https://registry.yarnpkg.com/@truffle/expect/-/expect-0.1.5.tgz#9b6d3d8e2f3765d8975506d50cd70a47e71161f7"
   integrity sha512-CkrR2BbT2ORwy1l39few03JlXysthXQIjWPk8vC2uA8orcUpMv7PWC4AoVbTvE2OgcnbClpYekGFyaQ9iToyAg==
 
-"@truffle/from-hardhat@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@truffle/from-hardhat/-/from-hardhat-0.2.6.tgz#cee5bacdb10cc80609198511bca83756c909e8b3"
-  integrity sha512-Bc58BaZhyBUglnpVMSKzCp2f4jlceoA9dW18h7+xkM+DCKrGu04X9jRVQdpo8s78jYGFsHFAyML7gVnvhknYdA==
+"@truffle/from-hardhat@^0.2.7":
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@truffle/from-hardhat/-/from-hardhat-0.2.7.tgz#11e2363dd117f97727f0986ded3da1b6fed63543"
+  integrity sha512-EdFSZmTe6dqPQ895MPlJ4E73X2kRu+fLI41rtJqfu8mhzKzp1TV5p1av6ho2Dx26WPusDabOZw5Ux32Nh7DSqw==
   dependencies:
     "@truffle/compile-common" "^0.9.4"
-    "@truffle/compile-solidity" "^6.0.65"
-    "@truffle/config" "^1.3.54"
+    "@truffle/compile-solidity" "^6.0.66"
+    "@truffle/config" "^1.3.55"
     debug "^4.3.1"
     find-up "^2.1.0"
     semver "^5.7.1"
 
-"@truffle/interface-adapter@^0.5.31":
-  version "0.5.31"
-  resolved "https://registry.yarnpkg.com/@truffle/interface-adapter/-/interface-adapter-0.5.31.tgz#9e62e9ed1c1c07d50d9e1dcffd6ef24efc1230e7"
-  integrity sha512-f5mOqbptQUUgHhBrBvWie4EUAUqHLN/wCBjFoP2N/QNcyvwGfdC3TSck9kjwIIFIgYgQQyAxQDGBQcjHryvxzg==
+"@truffle/interface-adapter@^0.5.32":
+  version "0.5.32"
+  resolved "https://registry.yarnpkg.com/@truffle/interface-adapter/-/interface-adapter-0.5.32.tgz#2ae896ea85a9d267abcd5d0139afc0f06ebc5745"
+  integrity sha512-7Hgmdb4nJUcWtq4vvgWY7Mr2RLOTOp5FZaWyMiFmjkcEEhDlezm2QstALWAXgT0W6q7tDmDBpw3vTIFenRhHBA==
   dependencies:
     bn.js "^5.1.3"
     ethers "^4.0.32"
     web3 "1.8.2"
 
-"@truffle/profiler@^0.1.46":
-  version "0.1.46"
-  resolved "https://registry.yarnpkg.com/@truffle/profiler/-/profiler-0.1.46.tgz#e6bdbb984536a31ebb49755ab4c6d41b7c195919"
-  integrity sha512-gFmBRa2SoJCEkCefLYqwioRNzik7j4FoZW9VBUWQ8y3guQJFFVSxsCln8Vif19ZRAyDS3pf4hbDC/75e3yLTnA==
+"@truffle/profiler@^0.1.47":
+  version "0.1.47"
+  resolved "https://registry.yarnpkg.com/@truffle/profiler/-/profiler-0.1.47.tgz#fee15be5ff2131115762f973228d64d960862f3c"
+  integrity sha512-CMX6TzlrFFpRb8RoHmlICRbusFPp0F8u0d1GaC2TW1tvfe5Ug4oLjAh5dBGpENDbm9DpMrbHV/2YvAyJzSYa1w==
   dependencies:
     "@truffle/contract-sources" "^0.2.0"
     "@truffle/expect" "^0.1.5"
@@ -1253,13 +1253,13 @@
   resolved "https://registry.yarnpkg.com/@truffle/promise-tracker/-/promise-tracker-0.1.5.tgz#df68df14d45a32bda6237ab85169d1808e4b3928"
   integrity sha512-wZx8eeu/6rcwwkmRF0Y832/NSQR9A9u6pyhTozv+j77jklnd/KZvu2JlACaAjP30eL5SOtSrSOzAMcSh/trJjg==
 
-"@truffle/provider@^0.3.7":
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/@truffle/provider/-/provider-0.3.7.tgz#fc217d34e84cb3f19f77fa41eef94c82b51bef36"
-  integrity sha512-OF4JZe3oIR9epWMMbJgCnJJCnu1Ce6IeLk8lCAuNtSlZ46gGj7INEDCXwB5KrgydUC5KDnGp4knHWnQfk5YWXg==
+"@truffle/provider@^0.3.8":
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/@truffle/provider/-/provider-0.3.8.tgz#8b34d17edf701226c8fab05e34cd6b09742c4041"
+  integrity sha512-qukkmGOZPsbV7WeKlj/bfYWOu/dbHWlF67QHDhV2KHBVardN06VDf40aB8WeeVkONHijb623hkUI/DE4DpHO+Q==
   dependencies:
     "@truffle/error" "^0.2.0"
-    "@truffle/interface-adapter" "^0.5.31"
+    "@truffle/interface-adapter" "^0.5.32"
     debug "^4.3.1"
     web3 "1.8.2"
 
